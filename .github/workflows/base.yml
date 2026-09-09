@@ -1,12 +1,12 @@
 name: Build CI
 
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
-  release:
-    types: [published]
+  # push:
+  #   branches: [main]
+  # pull_request:
+  #   branches: [main]
+  # release:
+  #   types: [published]
   workflow_dispatch: {}
 
 permissions:
@@ -27,8 +27,8 @@ jobs:
         include:
           - cxx: clang++-20
             cache_key: clang20
-          - cxx: g++-13
-            cache_key: gcc13
+          # - cxx: g++-13
+          #   cache_key: gcc13
 
     steps:
       - name: Checkout code
@@ -65,14 +65,14 @@ jobs:
       - name: Run tests
         run: ctest --test-dir build --output-on-failure --parallel
 
-      - name: Show ccache statistics
-        if: always()
-        run: ccache --show-stats || true
+      # - name: Show ccache statistics
+      #   if: always()
+      #   run: ccache --show-stats || true
 
-      - name: Upload build artifact
-        if: github.event_name == 'release'
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-output-linux-${{ matrix.cache_key }}
-          path: build/
-          retention-days: 7
+      # - name: Upload build artifact
+      #   if: github.event_name == 'release'
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: build-output-linux-${{ matrix.cache_key }}
+      #     path: build/
+      #     retention-days: 7
